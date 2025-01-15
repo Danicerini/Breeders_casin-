@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Simulator</title>
+    <link rel="stylesheet" href="CSS/blackjack.css">
+</head>
+<body>
+    <div id="game-container">
+        <header class="casino-header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="images/casino_logo.jpg" alt="Casino Logo">
+                    <h1>Breeders Blackjack</h1>
+                </div>
+                <div class="user-info">
+                    <p>Welcome, <span id="username">Player</span>!</p>
+                    <p>Your Balance: <span id="current-balance">$1000</span></p>
+                </div>
+            </div>
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#account">Account</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+
+        <main>
+            <!-- Sezione Saldo -->
+            <div id="balance" class="info-box">
+                <h4>Balance:</h4>
+                <p id="current-balance">$1000</p> <!-- Saldo iniziale -->
+            </div>
+
+            <div id="table">
+                <div id="dealer" class="player">
+                    <h2>Dealer</h2>
+                    <div class="cards" id="dealer-cards"></div>
+                    <div class="score" id="dealer-score">Score: 0</div>
+                </div>
+
+                <div id="player" class="player">
+                    <h2>Your Hand</h2>
+                    <div class="cards" id="player-cards"></div>
+                    <div class="score" id="player-score">Score: 0</div>
+                </div>
+            </div>
+
+            <div id="chips-container" class="chips-container">
+                <img src="images/chips/1.png" alt="Chip $1" class="chip" onclick="placeBet(1)">
+                <img src="images/chips/5.png" alt="Chip $5" class="chip" onclick="placeBet(5)">
+                <img src="images/chips/20.png" alt="Chip $25" class="chip" onclick="placeBet(25)">
+                <img src="images/chips/50.png" alt="Chip $50" class="chip" onclick="placeBet(50)">
+                <img src="images/chips/100.png" alt="Chip $100" class="chip" onclick="placeBet(100)">
+            </div>
+
+            <div id="info-panel" class="info-panel">
+                <div class="info-box">
+                    <h3>Puntata</h3>
+                    <p id="current-bet">$0</p>
+                </div>
+                <div class="info-box">
+                    <h3>Vincita</h3>
+                    <p id="potential-win">$0</p>
+                </div>
+            </div>
+
+            <div id="controls">
+                <button id="hit">Hit</button>
+                <button id="stand">Stand</button>
+                <button id="double">Double</button>
+                <button id="new-game">New Game</button>
+            </div>
+
+            <!-- Nuovi pulsanti -->
+            <div id="additional-controls">
+                <button id="back">Indietro</button>
+                <button id="rebet">Ripunta</button>
+            </div>
+
+            <div id="message"></div>
+        </main>
+
+    </div>
+
+    <script src="blackjack.js"></script>
+</body>
+</html>

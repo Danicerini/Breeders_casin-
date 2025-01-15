@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breeders Casinò</title>
+    <link rel="stylesheet" href="CSS/home.css">
+</head>
+<body>
+    <header class="casino-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="images/casino_logo.jpg" alt="Casino Logo">
+                <h1>Breeders Casinò</h1>
+            </div>
+            <div class="user-info">
+                <p>Welcome, <span id="username">Player</span>!</p>
+                <p>Your Balance: <span id="user-balance">$1000</span></p>
+            </div>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#support">Support</a></li>
+                <li><a href="#account">Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="casino-games">
+        <h2>Available Games</h2>
+        <div class="games-list">
+            <div class="game-card">
+                <img src="images/game/black_jack.png" alt="Blackjack">
+                <h3>Blackjack</h3>
+                <button onclick="goToGame('blackjack')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <img src="images/game/mines.jpg" alt="Mines">
+                <h3>Mines</h3>
+                <button onclick="goToGame('mines')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <img src="images/game/roulette.png" alt="Roulette">
+                <h3>Roulette</h3>
+                <button onclick="goToGame('roulette')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <img src="images/game/crazy_time.jpg" alt="Crazy Time">
+                <h3>Crazy Time</h3>
+                <button onclick="goToGame('crazy_time')">Play Now</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="casino-footer">
+        <p>&copy; 2025 Casino Royale. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        function goToGame(game) {
+            if (game === 'blackjack') {
+                window.location.href = 'blackjack.html';
+            } else if (game === 'mines') {
+                window.location.href = 'mines.html';
+            } else if (game === 'roulette') {
+                window.location.href = 'roulette.html';
+            } else if (game === 'crazy_time') {
+                window.location.href = 'crazy_time.html';
+            }
+        }
+
+        const balanceElement = document.getElementById('user-balance');
+        let balance = localStorage.getItem('balance') || 1000;
+        balanceElement.textContent = `$${balance}`;
+    </script>
+</body>
+</html>

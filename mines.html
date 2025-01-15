@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines - Breeders casinò</title>
+    <link rel="stylesheet" href="CSS/mines.css">
+</head>
+
+<body>
+    <header class="casino-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="images/casino_logo.jpg" alt="Logo">
+                <h1>Breeders Mines</h1>
+            </div>
+            <div class="user-info">
+                <p>Saldo: <span id="balance">1000</span>€</p>
+            </div>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Giochi</a></li>
+                <li><a href="#">Promozioni</a></li>
+                <li><a href="#">Contatti</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="casino-games">
+        <h2>Mines</h2>
+        <p>Clicca sulle celle per scoprire le mine. Evita le mine per guadagnare!</p>
+
+        <div class="game-info">
+            <label for="betAmount">Puntata:</label>
+            <input type="number" id="betAmount" min="1" value="10" />
+            <label for="mineCount">Numero di mine:</label>
+            <input type="number" id="mineCount" min="1" max="24" value="5" />
+            <button id="newGameBtn">Nuova Partita</button>
+            <p>Punti: <span id="score">0</span></p>
+        </div>
+
+        <div class="grid-container" id="gridContainer">
+            <!-- La griglia di gioco sarà popolata con JavaScript -->
+        </div>
+    </div>
+
+    <footer class="casino-footer">
+        <p>&copy; 2025 Casino Games. Tutti i diritti riservati.</p>
+        <a href="#">Termini e condizioni</a>
+    </footer>
+
+    <script src="mines.js"></script>
+</body>
+
+</html>
