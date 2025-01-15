@@ -85,36 +85,99 @@ function isBlackjack(hand) {
     return hand.length === 2 && (score === 21); // 2 cards and score 21
 }
 
+function revealDealerCards() {
+    const dealerCards = dealerCardsDiv.querySelectorAll('.card');
+
+    // Ruota la prima carta coperta
+    if (dealerCards.length > 0) {
+        dealerCards[0].classList.add('flip');
+        setTimeout(() => {
+            dealerCards[0].src = `images/carte/${dealerHand[0].value}_of_${dealerHand[0].suit}.png`;
+        }, 400); // Cambia l'immagine a metà della rotazione
+    }
+
+    // Aggiungi le altre carte con ritardo
+    for (let i = 1; i < dealerHand.length; i++) {
+        setTimeout(() => {
+            const cardImg = document.createElement('img');
+            cardImg.classList.add('card', 'slide-in');
+            cardImg.src = `images/carte/${dealerHand[i].value}_of_${dealerHand[i].suit}.png`;
+            dealerCardsDiv.appendChild(cardImg);
+
+            // Aggiorna il punteggio del dealer dopo ogni carta
+            if (i === dealerHand.length - 1) {
+                setTimeout(() => {
+                    dealerScoreDiv.textContent = `Score: ${calculateScore(dealerHand)}`;
+                }, 1000);
+            }
+        }, i * 3000); // 1.5 secondi di intervallo tra le carte
+    }
+}
+
 // Update the UI with the current hands and scores
 function updateUI(showDealerCard = false) {
+    // Salva le carte esistenti del player per mantenere le loro animazioni
+    const existingPlayerCards = Array.from(playerCardsDiv.children);
+    
     dealerCardsDiv.innerHTML = '';
     playerCardsDiv.innerHTML = '';
 
+    // Dealer cards
     for (let i = 0; i < dealerHand.length; i++) {
         const cardImg = document.createElement('img');
+        cardImg.classList.add('card');
+        
         if (i === 0 && !showDealerCard) {
             cardImg.src = 'images/carte/card_back.png';
+            cardImg.classList.add('hidden-card');
         } else {
             cardImg.src = `images/carte/${dealerHand[i].value}_of_${dealerHand[i].suit}.png`;
+            if (i > 1) {
+                cardImg.classList.add('slide-in');
+            }
         }
         dealerCardsDiv.appendChild(cardImg);
     }
 
-    for (let card of playerHand) {
-        const cardImg = document.createElement('img');
-        cardImg.src = `images/carte/${card.value}_of_${card.suit}.png`;
-        playerCardsDiv.appendChild(cardImg);
-    }
-
+    // Dealer score logic
     if (showDealerCard) {
         dealerScoreDiv.textContent = `Score: ${calculateScore(dealerHand)}`;
+        const hiddenCard = dealerCardsDiv.querySelector('.hidden-card');
+        if (hiddenCard) {
+            hiddenCard.classList.add('flip');
+            setTimeout(() => {
+                hiddenCard.src = `images/carte/${dealerHand[0].value}_of_${dealerHand[0].suit}.png`;
+            }, 1500); // Metà del tempo della nuova animazione più lenta
+        }
     } else {
-        dealerScoreDiv.textContent = 'Score: ?';
+        const visibleCardScore = calculateScore([dealerHand[1]]);
+        dealerScoreDiv.textContent = `Score: ${visibleCardScore} + ?`;
     }
 
+    // Player cards
+    playerHand.forEach((card, i) => {
+        let cardImg;
+        if (i < existingPlayerCards.length) {
+            // Riutilizza la carta esistente per mantenere l'animazione
+            cardImg = existingPlayerCards[i];
+            playerCardsDiv.appendChild(cardImg);
+        } else {
+            // Crea una nuova carta solo per le carte nuove
+            cardImg = document.createElement('img');
+            cardImg.classList.add('card');
+            cardImg.src = `images/carte/${card.value}_of_${card.suit}.png`;
+            if (i >= 2) { // Solo per le carte dopo le prime due
+                cardImg.classList.add('slide-in');
+            }
+            playerCardsDiv.appendChild(cardImg);
+        }
+    });
+
+    // Player score
     playerScoreDiv.textContent = `Score: ${calculateScore(playerHand)}`;
     balanceDiv.textContent = `Balance: $${playerBalance}`;
 }
+
 
 // Start a new game
 function newGame() {
@@ -178,27 +241,33 @@ function updateBetUI() {
     balanceDiv.textContent = `Balance: $${playerBalance}`;
 }
 
-// Handle the "Hit" action
+// Modifica la funzione hit
 function hit() {
-    if (currentBet === 0) {
-        messageDiv.textContent = 'Place a bet first!';
+    if (currentBet === 0 || isDoubleDown || !gameInProgress) {
+        messageDiv.textContent = 'Cannot hit at this time';
         return;
     }
 
-    if (isDoubleDown) {
-        messageDiv.textContent = 'You can\'t hit after doubling down!';
-        return;
-    }
-
-    playerHand.push(drawCard());
-    updateUI();
+    const newCard = drawCard();
+    playerHand.push(newCard);
+    
+    // Aggiungi solo la nuova carta mantenendo le vecchie
+    const cardImg = document.createElement('img');
+    cardImg.classList.add('card', 'slide-in');
+    cardImg.src = `images/carte/${newCard.value}_of_${newCard.suit}.png`;
+    playerCardsDiv.appendChild(cardImg);
+    
+    // Aggiorna solo il punteggio
+    playerScoreDiv.textContent = `Score: ${calculateScore(playerHand)}`;
 
     const playerScore = calculateScore(playerHand);
     if (playerScore > 21) {
-        messageDiv.textContent = 'You bust! Dealer wins! The round is over.';
-        resetBet();
-        gameInProgress = false;  // Termina il gioco
-        updateUI(true);
+        setTimeout(() => {
+            messageDiv.textContent = 'You bust! Dealer wins!';
+            resetBet();
+            gameInProgress = false;
+            updateUI(true);
+        }, 1000);
     }
 }
 
@@ -309,6 +378,11 @@ function dealerTurn() {
     gameInProgress = false; // End the game
     updateUI(true);
 }
+
+setTimeout(() => {
+    revealDealerCards();
+}, 1000); // Attendi un secondo prima di rivelare le carte
+
 
 
 // Reset bet after a round
